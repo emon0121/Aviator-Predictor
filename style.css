@@ -6,48 +6,77 @@ body{
   text-align:center;
 }
 
-.game-container{
-  padding:20px;
+.header{
+  display:flex;
+  justify-content:space-between;
+  padding:15px;
+  background:#111;
 }
 
-.top-bar{
-  background:#111827;
-  padding:10px;
-  border-radius:10px;
-}
-
-.sky{
-  position:relative;
-  height:300px;
-  margin:20px 0;
-  background:linear-gradient(to top,#111827,#1f2937);
-  border-radius:15px;
-  overflow:hidden;
-}
-
-#plane{
-  position:absolute;
-  font-size:30px;
-  left:10px;
-  bottom:20px;
-  transition: all 0.1s linear;
-}
-
-#multiplier{
-  position:absolute;
-  top:20px;
-  width:100%;
-  font-size:40px;
-  color:#ff3b3b;
+.logo{
+  color:#ff2b2b;
+  font-size:20px;
   font-weight:bold;
 }
 
+#statusText{
+  color:#00ff00;
+}
+
+.game-box{
+  position:relative;
+  height:300px;
+  margin:20px;
+  border-radius:20px;
+  background:radial-gradient(circle at bottom left,#111,#000);
+  overflow:hidden;
+}
+
+#multiplier{
+  font-size:60px;
+  margin-top:90px;
+  font-weight:bold;
+  transition:0.3s;
+}
+
+.plane{
+  position:absolute;
+  bottom:10px;
+  left:10px;
+  font-size:30px;
+  transition:all 1.5s ease-out;
+}
+
 button{
-  padding:12px;
-  width:100%;
+  width:90%;
+  padding:15px;
+  margin:10px;
   border:none;
-  border-radius:10px;
-  background:#ff3b3b;
+  border-radius:15px;
+  font-size:16px;
+}
+
+#signalBtn{
+  background:#ff2b2b;
   color:white;
-  font-size:18px;
+}
+
+#buyBtn{
+  background:#00c853;
+  color:white;
+}
+
+.payment-box{
+  background:#111;
+  margin:20px;
+  padding:15px;
+  border-radius:15px;
+}
+
+input{
+  width:90%;
+  padding:10px;
+  margin:10px;
+  border-radius:10px;
+  border:none;
 }
