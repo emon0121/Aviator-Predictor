@@ -1,24 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Aviator Demo</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+<meta charset="UTF-8">
+<title>Aviator Premium Signal</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
 
-<div class="game-container">
-  <div class="top-bar">
-    <h2>AVIATOR DEMO</h2>
-  </div>
+<div class="header">
+  <div class="logo">AVIATOR SIGNAL</div>
+  <div id="statusText">Free Mode</div>
+</div>
 
-  <div class="sky">
-    <div id="plane">✈</div>
-    <div id="multiplier">1.00x</div>
-  </div>
+<div class="game-box">
+  <div id="multiplier">?</div>
+  <div class="plane">✈</div>
+</div>
 
-  <button id="startBtn">START</button>
+<button id="signalBtn">Signal Now</button>
+<button id="buyBtn" style="display:none;">Unlock Premium</button>
+
+<div class="payment-box" id="paymentBox" style="display:none;">
+  <h3>Premium Payment</h3>
+
+  <p>bKash: 01XXXXXXXXX</p>
+  <p>Nagad: 01XXXXXXXXX</p>
+  <p>Binance (USDT TRC20): YOUR_WALLET</p>
+
+  <input type="text" id="trxId" placeholder="Enter Transaction ID">
+  <button onclick="submitPayment()">Submit Payment</button>
+
+  <hr>
+  <input type="text" id="premiumCode" placeholder="Enter Premium Code">
+  <button onclick="unlockPremium()">Activate Code</button>
 </div>
 
 <script src="app.js"></script>
