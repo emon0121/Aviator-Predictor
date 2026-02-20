@@ -2,18 +2,23 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Aviator Demo Predictor</title>
+  <title>Aviator Demo</title>
   <link rel="stylesheet" href="style.css">
   <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
 
-<div class="card">
-  <h2>AVIATOR DEMO</h2>
-  <div id="multiplier">1.00x</div>
+<div class="game-container">
+  <div class="top-bar">
+    <h2>AVIATOR DEMO</h2>
+  </div>
 
-  <button onclick="generateCrash()">Predict Now</button>
-  <button id="premiumBtn" style="display:none;">Unlock Premium Signal</button>
+  <div class="sky">
+    <div id="plane">✈</div>
+    <div id="multiplier">1.00x</div>
+  </div>
+
+  <button id="startBtn">START</button>
 </div>
 
 <script src="app.js"></script>
