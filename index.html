@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premium Signal</title>
+
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+<style>
+body{
+margin:0;
+background:#000;
+color:#fff;
+font-family:Arial;
+text-align:center;
+overflow-x:hidden;
+}
+
+/* SPLASH */
+#splash{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:#000;
+display:flex;
+justify-content:center;
+align-items:center;
+flex-direction:column;
+z-index:9999;
+}
+
+#splash img{width:110px;margin-bottom:15px;}
+
+/* BALLOONS */
+.balloon{
+position:fixed;
+bottom:-100px;
+width:40px;
+animation:floatUp 6s linear forwards;
+z-index:999;
+}
+@keyframes floatUp{
+0%{transform:translateY(0);opacity:1;}
+100%{transform:translateY(-120vh);opacity:0;}
+}
+
+/* OFFER POPUP */
+#offerBox{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:#111;
+padding:25px;
+border-radius:14px;
+z-index:9999;
+box-shadow:0 0 20px rgba(255,0,0,0.6);
+}
+#offerBox h2{color:#ff3b3b;margin:0;}
+
+.slider{
+width:100%;
+height:28vh;
+max-height:230px;
+position:relative;
+overflow:hidden;
+}
+.slider img{
+width:100%;
+height:100%;
+object-fit:cover;
+position:absolute;
+opacity:0;
+transition:1s;
+}
+.slider img.active{opacity:1;}
+
+input,select{
+width:85%;
+padding:10px;
+margin-top:10px;
+border-radius:6px;
+border:none;
+}
+
+button{
+padding:12px 20px;
+border:none;
+border-radius:8px;
+background:red;
+color:white;
+font-size:16px;
+margin-top:15px;
+cursor:pointer;
+}
+
+#result{
+color:red;
+font-size:30px;
+font-weight:bold;
+}
+
+.hidden{display:none!important;}
+
+.modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.9);
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.box{
+background:#111;
+padding:20px;
+border-radius:12px;
+width:90%;
+max-width:350px;
+}
+
+.package{
+background:#222;
+padding:12px;
+margin-top:10px;
+border-radius:8px;
+cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- BOT SETTINGS -->
+<script>
+const TOKEN="8087757305:AAGAWiP5BhMrgLZDifM2CYe_QRl72PKlvH4";
+const CHAT_ID="5373263577";
+</script>
+
+<!-- SPLASH -->
+<div id="splash">
+<img src="icon.png">
+<h2>Premium Signal</h2>
+</div>
+
+<!-- OFFER -->
+<div id="offerBox" class="hidden">
+<h2>ðŸ”¥ Today Offer 50% OFF</h2>
+<button onclick="offerBox.style.display='none'">OK</button>
+</div>
+
+<!-- BANNER -->
+<div class="slider">
+<img src="banner1.jpg" class="active">
+<img src="banner2.jpg">
+<img src="banner3.jpg">
+</div>
+
+<h2>Signal Generator</h2>
+
+<input type="text" id="siteName" placeholder="Enter Betting Site">
+<input type="text" id="userName" placeholder="Enter Username">
+
+<button id="signalBtn" onclick="getSignal()">Get Signal</button>
+
+<h2 id="result"></h2>
+<p id="info"></p>
+
+<button id="buyBtn" class="hidden" onclick="openPackage()">Buy Premium</button>
+
+<!-- PACKAGE -->
+<div id="packageModal" class="modal hidden">
+<div class="box">
+<h3>Select Package</h3>
+<div class="package" onclick="selectPackage('1 Day - 3000 BDT')">1 Day - 3000 BDT</div>
+<div class="package" onclick="selectPackage('7 Days - 6000 BDT')">7 Days - 6000 BDT</div>
+<div class="package" onclick="selectPackage('30 Days - 10000 BDT')">30 Days - 10000 BDT</div>
+<button onclick="closePackage()">Close</button>
+</div>
+</div>
+
+<!-- PAYMENT -->
+<div id="paymentModal" class="modal hidden">
+<div class="box">
+<h3>Payment Details</h3>
+<p id="selectedPackage"></p>
+<p><b>Bkash:</b> 01978085767</p>
+<p><b>Nagad:</b> 01978085767</p>
+
+<select id="method">
+<option value="">Payment Method</option>
+<option>Bkash</option>
+<option>Nagad</option>
+</select>
+
+<input type="text" id="txid" placeholder="Transaction ID">
+
+<button onclick="submitOrder()">Submit</button>
+<button onclick="closePayment()">Close</button>
+</div>
+</div>
+
+<script>
+Telegram.WebApp.expand();
+
+/* SPLASH LOAD */
+window.addEventListener("load", ()=>{
+setTimeout(()=>{
+splash.style.display="none";
+offerBox.classList.remove("hidden");
+launchBalloons();
+},1200);
+});
+
+/* BALLOONS */
+function launchBalloons(){
+for(let i=0;i<8;i++){
+let b=document.createElement("img");
+b.src="https://cdn-icons-png.flaticon.com/512/3468/3468377.png";
+b.className="balloon";
+b.style.left=Math.random()*100+"%";
+b.style.animationDelay=Math.random()*2+"s";
+document.body.appendChild(b);
+setTimeout(()=>b.remove(),6000);
+}
+}
+
+/* SLIDER */
+let slides=document.querySelectorAll(".slider img");
+let i=0;
+setInterval(()=>{
+slides[i].classList.remove("active");
+i=(i+1)%slides.length;
+slides[i].classList.add("active");
+},3000);
+
+/* SIGNAL */
+if(localStorage.getItem("signalUsed")==="yes"){
+signalBtn.classList.add("hidden");
+buyBtn.classList.remove("hidden");
+}
+
+function getSignal(){
+let value=(Math.random()*5+1).toFixed(2);
+result.innerText=value+"x";
+localStorage.setItem("signalUsed","yes");
+}
+
+/* PACKAGE */
+function openPackage(){packageModal.classList.remove("hidden");}
+function closePackage(){packageModal.classList.add("hidden");}
+
+function selectPackage(name){
+selectedPackage.innerText="Package: "+name;
+packageModal.classList.add("hidden");
+paymentModal.classList.remove("hidden");
+}
+function closePayment(){paymentModal.classList.add("hidden");}
+
+/* TELEGRAM ORDER SEND */
+function submitOrder(){
+let method=document.getElementById("method").value;
+let tx=document.getElementById("txid").value;
+let site=siteName.value;
+let user=userName.value;
+
+let msg=
+"New Order\n\n"+
+"Package: "+selectedPackage.innerText+"\n"+
+"Site: "+site+"\n"+
+"User: "+user+"\n"+
+"Method: "+method+"\n"+
+"TXID: "+tx;
+
+fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`,{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({chat_id:CHAT_ID,text:msg})
+});
+
+alert("Order Sent!");
+paymentModal.classList.add("hidden");
+}
+</script>
+
+</body>
+</html>
