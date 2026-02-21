@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Premium Signal</title>
+
+<style>
+body{
+margin:0;
+background:#000;
+color:#fff;
+font-family:Arial;
+text-align:center;
+}
+
+.hidden{display:none!important;}
+
+button{
+padding:12px 20px;
+border:none;
+border-radius:8px;
+background:red;
+color:white;
+font-size:16px;
+margin-top:15px;
+cursor:pointer;
+}
+
+input,select{
+width:85%;
+padding:10px;
+margin-top:10px;
+border-radius:6px;
+border:none;
+}
+
+/* FULL WIDTH SLIDER */
+.slider{
+width:100%;
+height:28vh;
+max-height:230px;
+position:relative;
+overflow:hidden;
+}
+
+.slider img{
+width:100%;
+height:100%;
+object-fit:cover;
+position:absolute;
+top:0;
+left:0;
+opacity:0;
+transition:opacity 1s ease-in-out;
+}
+
+.slider img.active{
+opacity:1;
+}
+
+#result{
+color:red;
+font-size:30px;
+font-weight:bold;
+}
+
+/* MODAL */
+.modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.85);
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.box{
+background:#111;
+padding:20px;
+border-radius:12px;
+width:90%;
+max-width:350px;
+}
+
+.package{
+background:#222;
+padding:12px;
+margin-top:10px;
+border-radius:8px;
+cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- TOP FULL WIDTH BANNER -->
+<div class="slider">
+<img src="https://emon0121.github.io/Aviator-Predictor/images/banner1.jpg" class="active">
+<img src="https://emon0121.github.io/Aviator-Predictor/images/banner2.jpg">
+<img src="https://emon0121.github.io/Aviator-Predictor/images/banner3.jpg">
+</div>
+
+<h1>Signal Generator</h1>
+
+<input type="text" id="siteName" placeholder="Enter Betting Site Name">
+<input type="text" id="userName" placeholder="Enter Your Username">
+
+<button id="signalBtn" onclick="getSignal()">Get Signal</button>
+
+<h2 id="result"></h2>
+<p id="info"></p>
+
+<button id="buyBtn" class="hidden" onclick="openPackage()">Buy Now</button>
+
+<!-- PACKAGE MODAL -->
+<div id="packageModal" class="modal hidden">
+<div class="box">
+<h2>Select Package</h2>
+
+<div class="package" onclick="selectPackage('1 Day - 300 BDT')">1 Day - 300 BDT</div>
+<div class="package" onclick="selectPackage('7 Days - 1000 BDT')">7 Days - 1000 BDT</div>
+<div class="package" onclick="selectPackage('30 Days - 3000 BDT')">30 Days - 3000 BDT</div>
+
+<button onclick="closePackage()">Close</button>
+</div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div id="paymentModal" class="modal hidden">
+<div class="box">
+
+<h2>Payment Details</h2>
+<p id="selectedPackage"></p>
+
+<p><b>Bkash:</b> 017XXXXXXXX</p>
+<p><b>Nagad:</b> 018XXXXXXXX</p>
+
+<select id="method">
+<option value="">Select Payment Method</option>
+<option>Bkash</option>
+<option>Nagad</option>
+</select>
+
+<input type="text" id="txid" placeholder="Enter Transaction ID">
+
+<button onclick="submitOrder()">Submit Payment</button>
+<button onclick="closePayment()">Close</button>
+
+</div>
+</div>
+
+<script>
+/* TELEGRAM BOT SETTINGS */
+const TOKEN="YOUR_BOT_TOKEN";
+const CHAT_ID="YOUR_CHAT_ID";
+
+let selectedPackageName="";
+
+/* AUTO BANNER SLIDE */
+let slides=document.querySelectorAll(".slider img");
+let index=0;
+
+setInterval(()=>{
+slides[index].classList.remove("active");
+index=(index+1)%slides.length;
+slides[index].classList.add("active");
+},3000);
+
+/* FREE SIGNAL LIMIT */
+window.onload=function(){
+if(localStorage.getItem("signalUsed")==="yes"){
+signalBtn.classList.add("hidden");
+buyBtn.classList.remove("hidden");
+}
+};
+
+function getSignal(){
+let site=siteName.value;
+let user=userName.value;
+
+if(site==="" || user===""){
+alert("Enter Site & Username");
+return;
+}
+
+if(localStorage.getItem("signalUsed")==="yes"){
+alert("Free signal already used!");
+return;
+}
+
+let value=(Math.random()*5+1).toFixed(2);
+
+result.innerText=value+"x";
+info.innerText="Site: "+site+" | Username: "+user;
+
+localStorage.setItem("signalUsed","yes");
+}
+
+/* PACKAGE */
+function openPackage(){packageModal.classList.remove("hidden");}
+function closePackage(){packageModal.classList.add("hidden");}
+
+function selectPackage(name){
+selectedPackageName=name;
+closePackage();
+selectedPackage.innerText="Package: "+name;
+paymentModal.classList.remove("hidden");
+}
+
+function closePayment(){paymentModal.classList.add("hidden");}
+
+/* SEND ORDER TO TELEGRAM */
+function submitOrder(){
+let method=method.value;
+let tx=txid.value;
+let site=siteName.value;
+let user=userName.value;
+
+if(method==="" || tx===""){
+alert("Enter payment details");
+return;
+}
+
+let message=
+"New Order\n\n"+
+"Package: "+selectedPackageName+"\n"+
+"Site: "+site+"\n"+
+"User: "+user+"\n"+
+"Method: "+method+"\n"+
+"TXID: "+tx;
+
+fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`,{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({
+chat_id:CHAT_ID,
+text:message
+})
+});
+
+alert("Order Sent! Wait for confirmation.");
+closePayment();
+}
+</script>
+
+</body>
+</html>
