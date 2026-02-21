@@ -1,0 +1,139 @@
+body{
+margin:0;
+font-family:Arial;
+background:#000;
+color:#fff;
+text-align:center;
+}
+
+.container{padding:20px;}
+.logo{color:red;font-size:26px;margin:15px 0;}
+
+.btn{
+background:red;
+color:#fff;
+border:none;
+padding:14px 25px;
+border-radius:8px;
+margin-top:15px;
+font-size:18px;
+cursor:pointer;
+}
+
+input{
+display:block;
+margin:10px auto;
+padding:10px;
+width:85%;
+border-radius:6px;
+border:none;
+}
+
+.hidden{display:none;}
+
+/* IMAGE SLIDER */
+.image-slider{
+position:relative;
+width:100%;
+height:180px;
+overflow:hidden;
+border-radius:12px;
+margin-bottom:20px;
+}
+
+.image-slider img{
+position:absolute;
+width:100%;
+height:100%;
+object-fit:cover;
+opacity:0;
+transition:opacity 1s ease-in-out;
+}
+
+.image-slider img.active{opacity:1;}
+
+.dots{
+position:absolute;
+bottom:10px;
+width:100%;
+text-align:center;
+}
+
+.dot{
+height:8px;
+width:8px;
+margin:0 5px;
+background:#aaa;
+display:inline-block;
+border-radius:50%;
+}
+
+.dot.active{background:red;}
+
+/* SIGNAL BOX */
+.animationBox{
+position:relative;
+height:300px;
+background:linear-gradient(#001,#003);
+border-radius:10px;
+overflow:hidden;
+}
+
+#plane{
+position:absolute;
+font-size:40px;
+left:-50px;
+bottom:50px;
+}
+
+@keyframes fly{
+0%{left:-50px;bottom:50px;}
+50%{left:50%;bottom:150px;}
+100%{left:110%;bottom:50px;}
+}
+
+#signalDisplay{
+position:absolute;
+top:40%;
+width:100%;
+font-size:60px;
+color:red;
+text-shadow:0 0 15px red;
+}
+
+canvas{
+position:absolute;
+bottom:0;
+left:0;
+}
+
+/* MODAL */
+.modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.85);
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.modal-content{
+background:#111;
+padding:25px;
+border-radius:12px;
+width:90%;
+max-width:400px;
+}
+
+.package{
+background:#222;
+padding:12px;
+margin:8px 0;
+border-radius:8px;
+cursor:pointer;
+}
+
+.package:hover{background:red;}
